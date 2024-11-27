@@ -26,10 +26,10 @@ jobs:
         run: |
           if [ -d "./KernelSU" ]; then rm -rf "./KernelSU"; fi
           if [ -d "./drivers/kernelsu" ]; then rm -rf "./drivers/kernelsu"; fi
-          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s main
 
       - name: Build for multiple devices
-        run: bash -c 'for device in d2x d2s d2xks d1 d1xks beyond0lte beyond0lteks beyond1lte beyond1lteks beyond2lte beyond2lteks beyondx beyondxks; do ./build.sh -m $device -k y; done'
+        run: bash -c 'for device in d2xks; do ./build.sh -m $device -k y; done'
 
       - name: Prepare ZIP files for upload
         run: |
