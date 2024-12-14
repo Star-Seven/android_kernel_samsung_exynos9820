@@ -2,7 +2,7 @@
 
 # 2024.12.12
 - Support SUSFS
-- Credits
+# Credits
 - susfs4ksu: https://gitlab.com/simonpunk/susfs4ksu/
 - ksu_module_susfs:https://github.com/sidex15/ksu_module_susfs
 
