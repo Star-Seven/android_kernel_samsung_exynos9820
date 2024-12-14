@@ -6,8 +6,7 @@
 - susfs4ksu: https://gitlab.com/simonpunk/susfs4ksu/
 - ksu_module_susfs:https://github.com/sidex15/ksu_module_susfs
 
-## Features
-## 2024.11.21
+## 2024.11.21 Features
 - Restore support for non GKI kernels using the latest kernelsu source code.
 - Merge extreme kernelsu branch modification: import SusFS.
 
