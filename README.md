@@ -1,11 +1,12 @@
 # ExtremeKernel for Exynos 9820 and 9825 devices
 
-## Features
-## 2024.11.21
+## 2024.12.18
+- Use this version manager.：https://github.com/rsuntk/KernelSU/releases
 - Restore support for non GKI kernels using the latest kernelsu source code.
 - Merge extreme kernelsu branch modification: import SusFS.
+- If you want to use Susfs, please visit: https://github.com/Star-Seven/android_kernel_samsung_exynos9820
 
-- TBD
+
 
 ## Supported devices:
 
