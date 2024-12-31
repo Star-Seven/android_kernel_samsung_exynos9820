@@ -2,6 +2,7 @@
 
 # 2024.12.12
 - Support SUSFS
+- Use this version manager.：https://github.com/rsuntk/KernelSU/releases
 # Credits
 - susfs4ksu:https://gitlab.com/simonpunk/susfs4ksu/
 - KernelSU:https://github.com/rsuntk/KernelSU/releases
