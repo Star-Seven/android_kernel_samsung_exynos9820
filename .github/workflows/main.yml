@@ -1,0 +1,67 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Set Time Zone to Beijing
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential curl git
+
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup KernelSU
+        run: |
+          if [ -d "./KernelSU" ]; then rm -rf "./KernelSU"; fi
+          if [ -d "./drivers/kernelsu" ]; then rm -rf "./drivers/kernelsu"; fi
+          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU/main/kernel/setup.sh" | bash -s main
+
+      - name: Setup and Apply susfs4ksu Patches
+        run: |
+          set -e
+    
+          # Clone the susfs4ksu repository
+          git clone https://github.com/backslashxx/susfs4ksu -b kernel-4.14
+    
+          # Ensure the KernelSU directory exists
+          mkdir -p ./KernelSU
+    
+          # Copy the patches to the appropriate directories
+          cp susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU/
+          cp susfs4ksu/kernel_patches/50_add_susfs_in_kernel-4.14.patch ./
+          cp -r susfs4ksu/kernel_patches/fs/* ./fs/
+          cp -r susfs4ksu/kernel_patches/include/linux/* ./include/linux/
+    
+          # Apply the patches
+          cd ./KernelSU
+          patch -p1 -F 3 < 10_enable_susfs_for_ksu.patch
+          cd ..
+          patch -p1 -F 3 < 50_add_susfs_in_kernel-4.14.patch
+    
+          echo "Successfully applied susfs4ksu patches"
+
+      - name: Build for multiple devices
+        run: bash -c 'for device in d2x d2s d2xks d1 d1xks beyond0lte beyond0lteks beyond1lte beyond1lteks beyond2lte beyond2lteks beyondx beyondxks; do ./build.sh -m $device -k y; done'
+
+      - name: Prepare ZIP files for upload
+        run: |
+          mkdir -p ${{ github.workspace }}/build/out/zip_files
+          find ${{ github.workspace }}/build/out/ -type f -name "*.zip" -exec cp {} ${{ github.workspace }}/build/out/zip_files/ \;
+
+      - name: Upload ZIP files as artifact
+        uses: actions/upload-artifact@v4
+        with:
+         name: build-zips
+         path: ${{ github.workspace }}/build/out/zip_files/
