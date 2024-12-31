@@ -1,8 +1,16 @@
-# ExtremeKernel for Exynos 9820 devices
+# ExtremeKernel for Exynos 9820 and 9825 devices
 
-## Features
+# 2024.12.12
+- Support SUSFS
+# Credits
+- susfs4ksu:https://gitlab.com/simonpunk/susfs4ksu/
+- KernelSU:https://github.com/rsuntk/KernelSU/releases
+- ksu_module_susfs:https://github.com/sidex15/ksu_module_susfs
 
-- TBD
+## 2024.11.21 Features
+- Restore support for non GKI kernels using the latest kernelsu source code.
+- Merge extreme kernelsu branch modification: import SusFS.
+
 
 ## Supported devices:
 
@@ -40,7 +48,7 @@ https://source.android.com/docs/setup/start/requirements
 
 2. Properly clone repository with submodules (KernelSU and toolchains)
 
-```git clone --recurse-submodules https://github.com/ExtremeXT/android_kernel_samsung_exynos9820.git```
+```git clone --recurse-submodules https://github.com/Star-Seven/android_kernel_samsung_exynos9820.git```
 
 3. Build for your device
 
