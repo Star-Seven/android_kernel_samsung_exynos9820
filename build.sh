@@ -262,16 +262,14 @@ else
     version=$(grep -o 'CONFIG_LOCALVERSION="[^"]*"' arch/arm64/configs/extreme.config | cut -d '"' -f 2)
 fi
 version=${version:1}
-pushd build/out/$MODEL/zip > /dev/null
-DATE=`date +"%d-%m-%Y_%H-%M-%S"`    
+cd build/out/$MODEL/zip > /dev/null
 
 if [[ "$KSU_OPTION" == "y" ]]; then
-    NAME="$version"_"$MODEL"_UNOFFICIAL_KSU_"$DATE".zip
+    NAME="$version"_"$MODEL"_KSU.zip
 else
-    NAME="$version"_"$MODEL"_UNOFFICIAL_"$DATE".zip
+    NAME="$version"_"$MODEL".zip
 fi
-zip -r -qq ../"$NAME" .
-popd > /dev/null
-popd > /dev/null
 
+zip -r -qq ../"$NAME" .
+cd - > /dev/null
 echo "Build finished successfully!"
