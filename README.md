@@ -1,8 +1,15 @@
-# ExtremeKernel for Exynos 9820 devices
+# ExtremeKernel for Exynos 9820 and 9825 devices
 
-## Features
+# 2024.12.12
+- Support SUSFS
+- Switch to Kernelsu-Next
 
-- TBD
+# Credits
+- susfs4ksu: https://gitlab.com/simonpunk/susfs4ksu/
+- KernelSU: https://github.com/rsuntk/KernelSU/releases
+- ksu_module_susfs: https://github.com/sidex15/ksu_module_susfs
+- KernelSU-Next： https://github.com/rifsxd/KernelSU-Next
+
 
 ## Supported devices:
 
