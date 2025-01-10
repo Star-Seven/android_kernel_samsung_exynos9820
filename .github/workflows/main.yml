@@ -1,7 +1,11 @@
-name: Build and Release
+name: build and release
 
 on:
   workflow_dispatch:
+    inputs:      
+      tag:
+        description: 'Release Tag'
+        required: true 
 
 jobs:
   build:
@@ -57,8 +61,12 @@ jobs:
           mkdir -p ${{ github.workspace }}/build/out/zip_files
           find ${{ github.workspace }}/build/out/ -type f -name "*.zip" -exec cp {} ${{ github.workspace }}/build/out/zip_files/ \;
 
-      - name: Upload ZIP files as artifact
-        uses: actions/upload-artifact@v4
+      - name: Create release
+        uses: ncipollo/release-action@v1
         with:
-         name: build-zips
-         path: ${{ github.workspace }}/build/out/zip_files/
+          tag: ${{ github.event.inputs.tag }}
+          name: "Star7-${{ github.event.inputs.tag }}"
+          draft: false
+          prerelease: false        
+          artifacts: ${{ github.workspace }}/build/out/zip_files/**/*.zip
+          body: "Commit SHA: ${{ github.sha }}"	 
