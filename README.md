@@ -1,14 +1,19 @@
 # ExtremeKernel for Exynos 9820 and 9825 devices
 
 # 2024.12.12
-- Support SUSFS
+# Based on [`ExtremeXT-Kernel`](https://github.com/ExtremeXT/android_kernel_samsung_exynos9820):
+
+- Import susfs4ksu.
 - Switch to Kernelsu-Next
+- Install `KernelSU-Next manager` from [Here](https://github.com/rifsxd/KernelSU-Next/releases)
+- Install `susfs4ksu module` from [Here](https://github.com/sidex15/susfs4ksu-module/releases)
+
 
 # Credits
-- susfs4ksu: https://gitlab.com/simonpunk/susfs4ksu/
-- KernelSU: https://github.com/rsuntk/KernelSU/releases
-- ksu_module_susfs: https://github.com/sidex15/ksu_module_susfs
-- KernelSU-Next： https://github.com/rifsxd/KernelSU-Next
+- [susfs4ksu](https://gitlab.com/simonpunk/susfs4ksu)
+- [KernelSU](https://github.com/rsuntk/KernelSU/releases)
+- [ksu_module_susfs](https://github.com/sidex15/ksu_module_susfs)
+- [KernelSU-Next](https://github.com/rifsxd/KernelSU-Next)
 
 
 ## Supported devices:
@@ -47,7 +52,7 @@ https://source.android.com/docs/setup/start/requirements
 
 2. Properly clone repository with submodules (KernelSU and toolchains)
 
-```git clone --recurse-submodules https://github.com/ExtremeXT/android_kernel_samsung_exynos9820.git```
+```git clone --recurse-submodules https://github.com/Star-Seven/android_kernel_samsung_exynos9820.git```
 
 3. Build for your device
 
@@ -55,7 +60,7 @@ https://source.android.com/docs/setup/start/requirements
 
 4. Fetch the flashable zip of the kernel that was just compiled
 
-```build/out/[your_device]/ExtremeKernel...zip```
+```build/out/[your_device]/Star7Kernel...zip```
 
 5. Flash it using a supported recovery like TWRP
 
