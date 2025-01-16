@@ -265,7 +265,7 @@ version=${version:1}
 cd build/out/$MODEL/zip > /dev/null
 
 if [[ "$KSU_OPTION" == "y" ]]; then
-    NAME="$version"_"$MODEL"_KSU.zip
+    NAME="$version"_"$MODEL"_KSU_Susfs.zip
 else
     NAME="$version"_"$MODEL".zip
 fi
