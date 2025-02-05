@@ -1,6 +1,3 @@
 [submodule "toolchain/clang-r416183b"]
 	path = toolchain/clang-r416183b
 	url = https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b
-[submodule "KernelSU"]
-	path = KernelSU
-	url = https://github.com/ExtremeXT/KernelSU
