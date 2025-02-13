@@ -9,64 +9,80 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        device: [d2x, d2s, d2xks, d1, d1xks, beyond0lte, beyond0lteks, beyond1lte, beyond1lteks, beyond2lte, beyond2lteks, beyondx, beyondxks]
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Set Time Zone to Beijing
+      - name: "⏰Set Time Zone to Beijing"
         run: |
           sudo timedatectl set-timezone "Asia/Shanghai"
 
-      - name: Set up build environment
+      - name: "🚄Set up build environment"
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential curl git
 
-      - name: Checkout repository with submodules
+      - name: "⭐Checkout repository with submodules"
         uses: actions/checkout@v4
         with:
           submodules: true
 
-      - name: Setup KernelSU
+      - name: "💡 Setup KernelSU"
         run: |
           if [ -d "./KernelSU" ]; then rm -rf "./KernelSU"; fi
           if [ -d "./drivers/kernelsu" ]; then rm -rf "./drivers/kernelsu"; fi
-          curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s next
+          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU/next/kernel/setup.sh" | bash -s susfs-v1.5.5
 
-      - name: Setup and Apply susfs4ksu Patches
+      - name: "😄 Setup and Apply susfs4ksu Patches"
         run: |
           set -e
 
-          # Clone the susfs4ksu repository
-          git clone https://github.com/Star-Seven/susfs4ksu -b main susfs4ksu-repo
+          git clone https://github.com/Star-Seven/susfs4ksu -b kernel-4.14 susfs4ksu-repo
 
-          # Copy the patches to the appropriate directories
-          cp susfs4ksu-repo/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
+          #cp susfs4ksu-repo/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
           cp susfs4ksu-repo/kernel_patches/50_add_susfs_in_kernel-4.14.patch ./
           cp -r susfs4ksu-repo/kernel_patches/fs/* ./fs/
           cp -r susfs4ksu-repo/kernel_patches/include/linux/* ./include/linux/
-
-          # Apply the patch
-          cd ./KernelSU-Next
-          patch -p1 -F 3 < 10_enable_susfs_for_ksu.patch || { echo "Failed to apply patch"; exit 1; }
-          cd ..
+          #cd ./KernelSU-Next
+          #patch -p1 -F 3 < 10_enable_susfs_for_ksu.patch || { echo "Failed to apply patch"; exit 1; }
+          #cd ..
           patch -p1 -F 3 < 50_add_susfs_in_kernel-4.14.patch || { echo "Failed to apply patch"; exit 1; }
 
           echo "Successfully applied susfs4ksu patches"
 
-      - name: Build for multiple devices
-        run: bash -c 'for device in d2x d2s d2xks d1 d1xks beyond0lte beyond0lteks beyond1lte beyond1lteks beyond2lte beyond2lteks beyondx beyondxks; do ./build.sh -m $device -k y; done'
+      - name: "🐎Build for specific device"
+        run: ./build.sh -m ${{ matrix.device }} -k y
 
-      - name: Prepare ZIP files for upload
+      - name: "💫Prepare ZIP files for upload"
         run: |
           mkdir -p ${{ github.workspace }}/build/out/zip_files
           find ${{ github.workspace }}/build/out/ -type f -name "*.zip" -exec cp {} ${{ github.workspace }}/build/out/zip_files/ \;
 
-      - name: Create release
+      - name: "😎Upload ZIP files as artifact"
+        uses: actions/upload-artifact@v4
+        with:
+         name: "👍${{ matrix.device }}-KernelSU-Susfs"
+         path: ${{ github.workspace }}/build/out/zip_files/
+
+  release:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: "⭐Download all artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: "❤️ Create release"
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ github.event.inputs.tag }}
-          name: "Star7-${{ github.event.inputs.tag }}"
+          name: "KernelSu-Susfs-${{ github.event.inputs.tag }}"
           draft: false
-          prerelease: false        
-          artifacts: ${{ github.workspace }}/build/out/zip_files/**/*.zip
-          body: "Commit SHA: ${{ github.sha }}"	 
+          prerelease: true        
+          artifacts: "artifacts/**/*.zip"
+          body: " Commit SHA: ${{ github.sha }}\n\n**Installation:**\n- Flash the kernel from this version.\n- Download and install KernelSU Next Manager APK from：[KernelSU](https://github.com/rsuntk/KernelSU/releases/latest)\n- Download and install the SuSFS module from：[ksu_module_susfs](https://github.com/sidex15/susfs4ksu-module/releases/latest)"
