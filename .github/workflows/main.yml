@@ -1,4 +1,4 @@
-name: build and release
+name: Build and Release
 
 on:
   workflow_dispatch:
@@ -33,7 +33,7 @@ jobs:
         run: |
           if [ -d "./KernelSU" ]; then rm -rf "./KernelSU"; fi
           if [ -d "./drivers/kernelsu" ]; then rm -rf "./drivers/kernelsu"; fi
-          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU/next/kernel/setup.sh" | bash -s susfs-v1.5.5
+          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU/main/kernel/setup.sh" | bash -s susfs-v1.5.5
 
       - name: "😄 Setup and Apply susfs4ksu Patches"
         run: |
