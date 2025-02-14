@@ -2,10 +2,6 @@ name: Build and Release
 
 on:
   workflow_dispatch:
-    inputs:      
-      tag:
-        description: 'Release Tag'
-        required: true 
 
 jobs:
   build:
@@ -65,24 +61,3 @@ jobs:
         with:
          name: "👍${{ matrix.device }}-KernelSU-Susfs"
          path: ${{ github.workspace }}/build/out/zip_files/
-
-  release:
-    needs: build
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-
-    steps:
-      - name: "⭐Download all artifacts"
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-      - name: "❤️ Create release"
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ github.event.inputs.tag }}
-          name: "Kernelsu-Next-Susfs-${{ github.event.inputs.tag }}"
-          draft: false
-          prerelease: false        
-          artifacts: "artifacts/**/*.zip"
-          body: " Commit SHA: ${{ github.sha }}\n\n**Installation:**\n- Flash the kernel from this version.\n- Download and install KernelSU Next Manager APK from：[KernelSU-Next](https://github.com/rifsxd/KernelSU-Next/releases/latest)\n- Download and install the SuSFS module from：[ksu_module_susfs](https://github.com/sidex15/susfs4ksu-module/releases/latest)"
