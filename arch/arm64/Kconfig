@@ -1384,3 +1384,5 @@ config FPSIMD_CORRUPTION_DETECT
 
 source "docker/Kconfig"
 
+source "nethunter/Kconfig"
+
