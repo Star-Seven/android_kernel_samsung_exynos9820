@@ -33,7 +33,7 @@ jobs:
         run: |
           if [ -d "./KernelSU-Next" ]; then rm -rf "./KernelSU-Next"; fi
           if [ -d "./drivers/KernelSU-Next" ]; then rm -rf "./drivers/KernelSU-Next"; fi
-          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU-Next/next/kernel/setup.sh" | bash -
+          curl -LSs "https://raw.githubusercontent.com/Star-Seven/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
 
       - name: "😄 Setup and Apply susfs4ksu Patches"
         run: |
@@ -41,13 +41,13 @@ jobs:
 
           git clone https://github.com/Star-Seven/susfs4ksu -b kernel-4.14 susfs4ksu-repo
 
-          cp susfs4ksu-repo/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
+          #cp susfs4ksu-repo/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
           cp susfs4ksu-repo/kernel_patches/50_add_susfs_in_kernel-4.14.patch ./
           cp -r susfs4ksu-repo/kernel_patches/fs/* ./fs/
           cp -r susfs4ksu-repo/kernel_patches/include/linux/* ./include/linux/
-          cd ./KernelSU-Next
-          patch -p1 -F 3 < 10_enable_susfs_for_ksu.patch || { echo "Failed to apply patch"; exit 1; }
-          cd ..
+          #cd ./KernelSU-Next
+          #patch -p1 -F 3 < 10_enable_susfs_for_ksu.patch || { echo "Failed to apply patch"; exit 1; }
+          #cd ..
           patch -p1 -F 3 < 50_add_susfs_in_kernel-4.14.patch || { echo "Failed to apply patch"; exit 1; }
 
           echo "Successfully applied susfs4ksu patches"
@@ -85,4 +85,4 @@ jobs:
           draft: false
           prerelease: false        
           artifacts: "artifacts/**/*.zip"
-          body: " Commit SHA: ${{ github.sha }}\n\n**Installation:**\n- Flash the kernel from this version.\n- Download and install KernelSU Next Manager APK from：[KernelSU-Next](https://github.com/rifsxd/KernelSU-Next/releases/latest)\n- Download and install the SuSFS module from：[ksu_module_susfs](https://github.com/sidex15/susfs4ksu-module/releases/latest)"
+          body: " Commit SHA: ${{ github.sha }}\n\n**Installation:**\n- Flash the kernel.\n- Download and install KernelSU Next Manager APK from：[KernelSU-Next](https://github.com/rifsxd/KernelSU-Next/releases/latest)\n- Download and install the SuSFS module from：[ksu_module_susfs](https://github.com/sidex15/susfs4ksu-module/releases/latest)"
